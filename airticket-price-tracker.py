@@ -219,10 +219,12 @@ def getDate():
         if isDateValid(date):
             return date
 
-def main():
-    origin = getOrigin()
-    destination = getDestination()
-    date = getDate()
+def main(is_first):
+    global origin, destination, date
+    if is_first:
+        origin = getOrigin()
+        destination = getDestination()
+        date = getDate()
     update = checkUpdate(origin, destination, date)
     if update[0]:
         last_fare = update[1]
@@ -238,7 +240,9 @@ if __name__ == '__main__':
             wait_seconds = int(sys.argv[1])
         except ValueError:
             sys.exit("Enter waiting time in seconds. Eg.: 300")
+        is_first = True
         while True:
-            main()
+            main(is_first)
+            is_first = False
             time.sleep(wait_seconds)
     main()
