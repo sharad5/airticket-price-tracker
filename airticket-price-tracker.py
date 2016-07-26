@@ -52,12 +52,15 @@ def getLatestFare(_origin, _destination, _date):
         10 latest results from the results page.
         1 lastest result from the results page.
     """
-    _url = base_url.format(_origin, _destination, _date)
-    soup = getSoup(_url)
-    fare_list = soup.find('ul').find_all('li',{"class":["active","not-active"]})
-    fares = []
-    for fare in fare_list:
-        fares.append({'price':getPrice(fare.find('a').find('div').findChildren()[2].string),'date':fare.find('a').find('div').findChildren()[0].string})
+    try:
+        _url = base_url.format(_origin, _destination, _date)
+        soup = getSoup(_url)
+        fare_list = soup.find('ul').find_all('li',{"class":["active","not-active"]})
+        fares = []
+        for fare in fare_list:
+            fares.append({'price':getPrice(fare.find('a').find('div').findChildren()[2].string),'date':fare.find('a').find('div').findChildren()[0].string})
+    except Exception:
+        sys.exit("No Route found.")
     return fares
 
 def initDb():
